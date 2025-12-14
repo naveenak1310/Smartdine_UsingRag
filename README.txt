@@ -37,6 +37,10 @@ Features
 
 8.Booking history
 
+9.Used 16 animation
+
+10.Used more than 56 images
+
 Admin panel
 
 Recommendation Logic
