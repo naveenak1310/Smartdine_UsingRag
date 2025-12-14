@@ -1,0 +1,4 @@
+node_modules/
+smartdine-frontend/node_modules/
+.env
+smartdine-frontend/.env
