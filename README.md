@@ -15,6 +15,69 @@ Type naturally like you'd ask a friend:
 ### 🎲 "Surprise Me" Feature
 Can't decide? Let SmartDine pick something perfect for you based on random suggestion.
 ## Project Overview
+## 🤖 AI Chatbot (RAG-Based Recommendation System)
+
+SmartDine includes an AI-powered chatbot built using **RAG (Retrieval-Augmented Generation)** to provide accurate, relevant, and trustworthy restaurant recommendations.
+
+Unlike a normal chatbot that may guess answers, SmartDine first **retrieves real restaurant data from the database** and then asks the AI to respond **using only that data**.
+
+---
+
+## How the RAG Chatbot Works (High Level)
+
+### 1) Embedding & Index Creation
+Restaurant details such as **name, cuisine, tags, and description** are converted into numeric vectors (embeddings) during application startup.  
+These embeddings represent the meaning of each restaurant in vector space.
+
+### 2) Query Understanding
+When a user enters a query like:
+> *"cheap spicy biryani"*
+
+The query is converted into an embedding using the same embedding logic.
+
+### 3) Retrieval & Ranking
+The system compares the query embedding with stored restaurant embeddings using:
+- **Cosine similarity** (semantic match)
+- **Keyword matching** (exact food matches)
+
+The most relevant restaurants are selected (Top-K results).
+
+### 4) Context Building
+Only the retrieved restaurants are formatted into a compact context containing:
+- Name
+- Cuisine
+- Price range
+- Rating
+- Tags
+- Description
+
+This ensures the AI has limited, accurate information.
+
+### 5) AI Response Generation
+The context is sent to the LLM through **OpenRouter API** with strict instructions:
+- Use **only the provided restaurant data**
+- Return a **clean JSON response**
+
+### 6) Safe Mapping to Database Records
+The AI response is parsed and mapped back to real restaurant records from the database.  
+If parsing fails, the system safely falls back to the top retrieved results.
+
+### 7) Booking Integration
+If the user responds with:BOOK: Restaurant Name
+
+The chatbot resolves the correct restaurant ID and continues the booking flow securely.
+
+---
+
+## Why RAG Is Used in SmartDine
+
+- Prevents AI hallucination  
+- Ensures recommendations come only from real database entries  
+- Improves accuracy for food-specific and mood-based queries  
+- Makes recommendations explainable and reliable  
+
+---
+
 
 SmartDine allows users to:
 - Register and log in
@@ -44,7 +107,12 @@ Admin can add a new restauarant.
 - JPA Data
 
 **Database**
-- MySQL
+-  MySQL
+
+**AI/ML**
+- Retrieval-Augmented Generation (RAG)
+- Vector embeddings for semantic search
+- LLM integration via OpenRouter
 
 **Tools**
 - Postman – API testing and debugging
