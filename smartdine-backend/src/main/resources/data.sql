@@ -1,5 +1,12 @@
+
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS restaurant_tags;
+DROP TABLE IF EXISTS restaurants;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
@@ -7,7 +14,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE restaurants (
-    id INT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cuisine VARCHAR(50),
     description TEXT,
     location VARCHAR(100),
@@ -23,9 +30,9 @@ CREATE TABLE restaurants (
 );
 
 CREATE TABLE bookings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    restaurant_id INT,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
+    restaurant_id BIGINT,
     persons INT,
     date VARCHAR(255),
     time VARCHAR(255),
@@ -36,9 +43,9 @@ CREATE TABLE bookings (
 );
 
 CREATE TABLE reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    restaurant_id INT,
-    user_id INT,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id BIGINT,
+    user_id BIGINT,
     rating INT,
     text VARCHAR(1000),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -47,8 +54,8 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE restaurant_tags (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    restaurant_id INT,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id BIGINT,
     tag VARCHAR(255),
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
 );

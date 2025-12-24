@@ -24,19 +24,21 @@ export default function Result() {
     );
   }
 
-  const { query, bestMatch, alternatives } = result;
+  const { query, bestMatch, alternatives, explanation } = result;
   const [currentImage] = useState(0);
   const imageList = bestMatch?.images ? bestMatch.images.split(",") : [];
 
-  const bestArea =
-    city === "Coimbatore"
-      ? bestMatch.area
-      : getAreaForRestaurant(bestMatch.id, city);
+  const bestArea = bestMatch
+    ? (city === "Coimbatore"
+        ? bestMatch.area
+        : getAreaForRestaurant(bestMatch.id, city))
+    : "";
 
-  const bestCity =
-    city === "Coimbatore"
-      ? bestMatch.location
-      : city;
+  const bestCity = bestMatch
+    ? (city === "Coimbatore"
+        ? bestMatch.location
+        : city)
+    : "";
 
   return (
     <section className="result-page">
@@ -47,6 +49,20 @@ export default function Result() {
           <p className="user-query">
             You said: <span>{query}</span>
           </p>
+        )}
+
+        {!bestMatch && explanation && (
+          <div style={{
+            padding: "20px",
+            background: "#fff3cd",
+            borderLeft: "4px solid #ffc107",
+            borderRadius: "4px",
+            marginBottom: "20px"
+          }}>
+            <p style={{ fontSize: "16px", lineHeight: "1.6", margin: 0 }}>
+              {explanation}
+            </p>
+          </div>
         )}
 
         {bestMatch && (
@@ -75,6 +91,21 @@ export default function Result() {
                 </p>
 
                 <p className="restaurant-desc">{bestMatch.description}</p>
+
+                {explanation && (
+                  <div style={{
+                    marginTop: "15px",
+                    padding: "12px",
+                    background: "#f0f7ff",
+                    borderLeft: "4px solid #6b2df8",
+                    borderRadius: "4px"
+                  }}>
+                    <strong>🤖 AI Recommendation:</strong>
+                    <p style={{ marginTop: "8px", fontSize: "14px", lineHeight: "1.6" }}>
+                      {explanation}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <button

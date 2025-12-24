@@ -37,6 +37,9 @@ public class Restaurant {
     @Column(length = 2000)
     private String images;
 
+    @Column(columnDefinition = "JSON")
+    private String embedding;
+
     public Restaurant() {}
 
    
@@ -74,4 +77,7 @@ public class Restaurant {
 
     public String getImages() { return images; }
     public void setImages(String images) { this.images = images; }
+
+    public String getEmbedding() { return embedding; }
+    public void setEmbedding(String embedding) { this.embedding = embedding; }
 }

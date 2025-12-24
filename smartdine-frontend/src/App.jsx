@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Search from './pages/Search'
+import RagSearch from './pages/RagSearch'
 import Result from './pages/Result'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -33,6 +34,9 @@ function App() {
         <nav className="nav-links">
           <Link to="/search" className={location.pathname === '/search' ? 'active' : ''}>
             Search
+          </Link>
+          <Link to="/rag-search" className={location.pathname === '/rag-search' ? 'active' : ''}>
+            🤖 RAG
           </Link>
 
           {!localStorage.getItem("loggedIn") ? (
@@ -86,6 +90,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/rag-search" element={<RagSearch />} />
           <Route path="/result" element={<Result />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

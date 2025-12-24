@@ -21,6 +21,9 @@ public class RestaurantController {
     @Autowired
     private RestaurantTagRepository tagRepo;
 
+    @Autowired
+    private SimilarityService similarityService;
+
     @PostMapping
     public Restaurant createRestaurant(@RequestBody Restaurant r) {
 
@@ -29,6 +32,9 @@ public class RestaurantController {
 
         Restaurant saved = restaurantRepo.save(r);
         saveTags(saved.getId(), r.getTags());
+        
+        similarityService.refreshFoodKeywords();
+        
         return saved;
     }
 
@@ -68,6 +74,7 @@ public ResponseEntity<Restaurant> updateRestaurant(
                     db.setTags(r.getTags());
                     tagRepo.deleteAll(tagRepo.findByRestaurantId(id));
                     saveTags(id, r.getTags());
+                    similarityService.refreshFoodKeywords();
                 }
 
                 if (r.getImages() != null && !r.getImages().isEmpty())
