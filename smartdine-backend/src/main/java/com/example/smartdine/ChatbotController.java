@@ -26,6 +26,8 @@ public class ChatbotController {
 
     @Autowired
     private RecommendationService recommendationService;
+    @Autowired
+    private RagRecommendationService ragRecommendationService;
 
     @PostMapping("/chat")
     public ResponseEntity<?> chat(@RequestBody Map<String, String> body) {
@@ -45,15 +47,16 @@ public class ChatbotController {
                 );
             }
 
-            RecommendationResponse rec = recommendationService.recommend(question);
+            // Use RAG-based retrieval + generation
+            RagRecommendationService.RagResponse rag = ragRecommendationService.getRecommendation(question);
 
-            if (rec.getBestMatch() == null) {
+            if (rag.getBestRestaurant() == null) {
                 return ResponseEntity.ok(Map.of("reply", "Sorry, We currently dont have this food in our restaurant"));
             }
 
             StringBuilder context = new StringBuilder();
 
-            Restaurant best = rec.getBestMatch();
+            Restaurant best = rag.getBestRestaurant();
             context.append(best.getName()).append(" - ")
                     .append(best.getCuisine()).append(", ")
                     .append(best.getPriceRange()).append(", ")
@@ -61,7 +64,7 @@ public class ChatbotController {
                     .append("Location: ").append(best.getLocation())
                     .append("\n");
 
-            for (Restaurant r : rec.getAlternatives()) {
+            for (Restaurant r : rag.getAlternatives()) {
                 context.append(r.getName()).append(" - ")
                         .append(r.getCuisine()).append(", ")
                         .append(r.getPriceRange()).append(", ")
@@ -119,7 +122,7 @@ public class ChatbotController {
             return ResponseEntity.ok(Map.of("reply", "BOOK:" + best.getId()));
             }
 
-            for (Restaurant r : rec.getAlternatives()) {
+            for (Restaurant r : rag.getAlternatives()) {
                 if (r.getName().toLowerCase().equals(name)) {
                 return ResponseEntity.ok(Map.of("reply", "BOOK:" + r.getId()));
                 }

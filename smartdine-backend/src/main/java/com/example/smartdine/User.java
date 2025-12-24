@@ -17,7 +17,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String location; // ⭐ NEW FIELD
+    private String location; 
 
     public int getId() {
         return id;
